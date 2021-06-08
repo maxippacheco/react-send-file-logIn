@@ -3,9 +3,11 @@ import { firebase } from '../database/firebase-config';
 
 export const startLogin = (email, password) => {
     return (dispatch) => {
-       
+
+
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then(({user}) =>{
+
                 dispatch(login(user.email, user.displayName, user.uid));
             })
             .catch(err => console.log(err));
@@ -28,7 +30,6 @@ export const startRegisterWithEmailAndPassword = (email, password, name) => {
         })
         .catch(error => {
             console.log(error);
-            // Swal.fire('Error', error.message, 'error');
         })
     }
 
@@ -55,3 +56,4 @@ export const login = (email, displayName, uid) => ({
 const logout = () => ({
     type: types.logout
 })
+

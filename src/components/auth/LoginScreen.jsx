@@ -6,12 +6,13 @@ import { useForm } from '../../hooks/useForm';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { startLogin } from '../../actions/auth';
+import { startLoadingPublicKey } from '../../actions/public_key';
 
 export const LoginScreen = () => {
   
     const dispatch = useDispatch();
     
-    const [loginValues, handleInputChange, reset] = useForm({
+    const [loginValues, handleInputChange, ] = useForm({
         email: 'test@test.com',
         password: '123456'
     })
@@ -22,7 +23,9 @@ export const LoginScreen = () => {
     const loginSubmit = (ev) => {
         ev.preventDefault();        
 
-        dispatch(startLogin(email, password))
+
+        dispatch(startLogin(email, password, '123213jsdifwu'));
+        dispatch(startLoadingPublicKey())
     }
 
     return (

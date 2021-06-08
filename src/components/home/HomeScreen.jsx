@@ -1,27 +1,24 @@
-import { Button } from '@material-ui/core'
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import { logout, startLogout } from '../../actions/auth'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom';
 import { Navbar } from '../navbar/Navbar'
 
 export const HomeScreen = () => {
   
-  const dispatch = useDispatch();
-
-  const handleLogout = () => {
-    
-    dispatch(startLogout());
-
-  }
+  const { name } = useSelector(state => state.auth);
 
   return (
     <div>
         <Navbar />
 
-        <div className='mt-5'>
-        <Button onClick={handleLogout} variant='contained' color='primary'>Log Out</Button>  
-
-        </div>
+              <ul>
+                <li>Routes that I did: </li>
+                <li>
+                  <Link to='/user'>
+                    User-settings
+                  </Link>
+                </li>
+              </ul>
 
     </div>
   )

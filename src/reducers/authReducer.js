@@ -8,9 +8,13 @@ export const authReducer = (state = {}, action) => {
             return{
                 email: action.payload.email,
                 name: action.payload.displayName,
-                uid: action.payload.uid
+                uid: action.payload.uid,
             }    
-    
+   
+        // case types.public_key:
+        //     return{
+        //     }
+        
         case types.logout:
             return {}
     

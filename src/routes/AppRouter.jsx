@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react'
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link,
   Redirect
 } from "react-router-dom";
 import {firebase} from '../database/firebase-config';
@@ -13,6 +11,9 @@ import { useDispatch } from 'react-redux';
 import { login } from '../actions/auth';
 import { PublicRoute } from './PublicRoute';
 import { PrivateRoute } from './PrivateRoute';
+import { UserProfile } from '../components/profile/UserProfile';
+import { startLoadingPublicKey } from '../actions/public_key';
+import { LoadingScreen } from '../components/loader/LoadingScreen';
 
 
 
@@ -29,6 +30,7 @@ export const AppRouter = () => {
             if (user?.uid) {
                 
                 dispatch(login(user.email, user.displayName, user.uid))
+                dispatch(startLoadingPublicKey());
 
                 setUserLoggedIn(true);
 
@@ -41,10 +43,14 @@ export const AppRouter = () => {
             setChecking(false)
         })
 
-        console.log(checking, userLoggedIn);
  
-    }, [dispatch, setUserLoggedIn, setChecking])
-   
+    }, [dispatch, setUserLoggedIn, setChecking, checking])
+  
+    if (checking) {
+        return <LoadingScreen /> 
+    }    
+
+
     return (
             <Router>
                 <div>
@@ -58,6 +64,12 @@ export const AppRouter = () => {
                         <PrivateRoute 
                             exact path='/home'
                             component={HomeScreen}
+                            isAuthenticated={userLoggedIn}
+                        />
+
+                        <PrivateRoute 
+                            exact path='/user'
+                            component={UserProfile}
                             isAuthenticated={userLoggedIn}
                         />
 

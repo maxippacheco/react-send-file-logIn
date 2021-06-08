@@ -5,22 +5,62 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import clsx from 'clsx';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import { Badge } from '@material-ui/core';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import SettingsIcon from '@material-ui/icons/Settings';
+import PersonIcon from '@material-ui/icons/Person';
+import { useDispatch } from 'react-redux';
+import { startLogout } from '../../actions/auth';
 
 
 export const Navbar = () => {
 
+  const dispatch = useDispatch();
+
+  const useStyles = makeStyles((theme) => ({
+     appbarBackground: {
+       backgroundColor: "#1E5797"
+      },
+      root: {
+        flexGrow: 1,
+      },
+      colorAppBar: {
+        color: 'white'
+      },
+      menuButton: {
+        marginRight: theme.spacing(2),
+      },
+      title: {
+        flexGrow: 1,
+      },
 
 
+    })
+  );
 
   const classes = useStyles();
-  const [auth, setAuth] = React.useState(true);
+
+
+
+  const [auth, ] = React.useState(true);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
+
   const open = Boolean(anchorEl);
 
+  const circle = <div className={clsx(classes.shape, classes.shapeCircle)} />;
 
+
+
+
+  const handleLogout = () => {
+
+      dispatch(startLogout());
+  }
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -33,13 +73,14 @@ export const Navbar = () => {
     
     return (
     <div className={classes.root}>
-      <AppBar position="static" color='primary'>
+      <AppBar position="static" classes={{ root: classes.appbarBackground, positionStatic: classes.colorAppBar}}>
+
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Photos
+            Send File
           </Typography>
           {auth && (
             <div>
@@ -50,7 +91,11 @@ export const Navbar = () => {
                 onClick={handleMenu}
                 color="inherit"
               >
+              <Badge color="secondary" overlap="circle" badgeContent=" " variant='dot'>
                 <AccountCircle />
+                {circle}
+              </Badge>
+
               </IconButton>
               <Menu
                 id="menu-appbar"
@@ -67,8 +112,9 @@ export const Navbar = () => {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleClose}><PersonIcon />Profile</MenuItem>
+                <MenuItem onClick={handleClose}><SettingsIcon />My account</MenuItem>
+                <MenuItem onClick={handleLogout}><ExitToAppIcon />Log out</MenuItem>
               </Menu>
             </div>
           )}
